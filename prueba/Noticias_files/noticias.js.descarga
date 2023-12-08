@@ -1,0 +1,123 @@
+"use strict";
+class Noticias{
+    constructor(){
+        var p = document.createElement("p");
+        if(window.File &&  window.FileReader && window.FileList && window.Blob)
+        { 
+            $(p).text("Este navegador soporta el API File");
+        }
+        else
+        {
+            $(p).text("Este navegador NO soporta el API File");
+        }
+        $("body").append(p);
+    }
+
+    async readInputFile(files){
+        await this.leerArchivo(files);
+        this.añadirNuevo();
+    }
+
+    leerArchivo(files){
+        var archivo = files[0];
+        var tipoTexto = /text.*/;
+        if (archivo.type.match(tipoTexto)) 
+          {
+            var h2 = document.createElement("h2");
+            $(h2).text("Noticias");
+            $("body").append(h2);
+            var main = document.createElement("main");
+            var lector = new FileReader();
+            var promise = new Promise(function (resolve, reject) {
+                lector.onload = function (evento) {
+                  var texto = lector.result;
+                  var parrafos = texto.split("\n");
+          
+                  for (var i = 0; i < parrafos.length; i++) {
+                    var section = document.createElement("section");
+                    var linea = parrafos[i].split("_");
+                    var titulo = document.createElement("p");
+                    var subtitulo = document.createElement("p");
+                    var texto = document.createElement("p");
+                    var autor = document.createElement("p");
+                    $(titulo).text(linea[0]);
+                    $(subtitulo).text(linea[1]);
+                    $(texto).text(linea[2]);
+                    $(autor).text(linea[3]);
+                    $(section).append(titulo);
+                    $(section).append(subtitulo);
+                    $(section).append(texto);
+                    $(section).append(autor);
+                    $(main).append(section);
+                  }
+          
+                  $("body").append(main);
+                  resolve();
+                };
+              });
+          
+              lector.readAsText(archivo);
+
+              return promise;
+            } else {
+              $(errorArchivo).text("Error: ¡¡¡ Archivo no válido !!!");
+
+              return Promise.reject();
+            }
+    }
+
+    añadirNuevo(){
+        var article = document.createElement("article");
+        $(article).attr("data-state","añadir");
+        var h3 = document.createElement("h3");
+        $(h3).text("Añadir noticias manualmente");
+        $("body").append(h3);
+        var pTitulo = document.createElement("p");
+        $(pTitulo).text("Título: ");
+        var input = document.createElement("input");
+        $(pTitulo).append(input);
+        $(article).append(pTitulo);
+        var pSubtitulo = document.createElement("p");
+        $(pSubtitulo).text("Subtítulo: ");
+        var input = document.createElement("input");
+        $(pSubtitulo).append(input);
+        $(article).append(pSubtitulo);
+        var pTexto = document.createElement("p");
+        $(pTexto).text("Texto: ");
+        var input = document.createElement("input");
+        $(pTexto).append(input);
+        $(article).append(pTexto);
+        var pAutor = document.createElement("p");
+        $(pAutor).text("Autor: ");
+        var input = document.createElement("input");
+        $(pAutor).append(input);
+        $(article).append(pAutor);
+        var boton = document.createElement("button");
+        $(boton).attr("onclick","noticias.addNoticia()");
+        $(boton).text("Añadir noticia");
+        $(article).append(boton);
+        $("body").append(article);
+        
+    }
+
+    addNoticia(){
+      var inputs = $("article").find("input");
+      var section = document.createElement("section");
+      var titulo = document.createElement("p");
+      var subtitulo = document.createElement("p");
+      var texto = document.createElement("p");
+      var autor = document.createElement("p");
+      $(titulo).text($(inputs[0]).val());
+      $(subtitulo).text($(inputs[1]).val());
+      $(texto).text($(inputs[2]).val());
+      $(autor).text($(inputs[3]).val());
+      $(section).append(titulo);
+      $(section).append(subtitulo);
+      $(section).append(texto);
+      $(section).append(autor);
+      $("main").append(section);
+    }
+}
+
+var noticias = new Noticias();
+

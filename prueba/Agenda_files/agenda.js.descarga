@@ -1,0 +1,135 @@
+"use strict";
+class Agenda{
+    constructor(){
+        this.last_api_call=null;
+        this.last_api_result=null;
+    }
+
+    cargarDatos(){
+        return new Promise((resolve, reject) => {
+            $.ajax({
+              dataType: "xml",
+              url: "https://ergast.com/api/f1/current",
+              method: "GET",
+              success: function (datos) {
+                resolve(datos);
+              },
+              error: function (error) {
+                reject(error);
+              }
+            });
+          });
+    }
+
+    async manejarDatos(){
+        var fechaAhora = new Date();
+        
+        if(this.last_api_call!=null){
+        var diferencia = (fechaAhora - this.last_api_call) / (1000*60);
+        if(diferencia>10){
+            this.last_api_result= await this.cargarDatos();
+            this.last_api_call= fechaAhora;
+            }
+        }
+        else{
+            this.last_api_result= await this.cargarDatos();
+            this.last_api_call= fechaAhora;
+        }
+        $("body").find("table").remove();
+    
+            var tabla = document.createElement("table");
+            var head = document.createElement("thead");
+            var body = document.createElement("tbody");
+            var tr1 = document.createElement("tr");
+            var nombreCa = document.createElement("th");
+            $(nombreCa).attr("scope","col");
+            $(nombreCa).attr("id","nombreCa");
+            $(nombreCa).text("Nombre Carrera");
+            $(tr1).append(nombreCa);
+            var temporada = document.createElement("th");
+            $(temporada).attr("scope","col");
+            $(temporada).attr("id","temp");
+            $(temporada).text("Temporada");
+            $(tr1).append(temporada);
+            var ronda = document.createElement("th");
+            $(ronda).attr("scope","col");
+            $(ronda).attr("id","ronda");
+            $(ronda).text("Ronda");
+            $(tr1).append(ronda);
+            var coord = document.createElement("th");
+            $(coord).attr("scope","col");
+            $(coord).attr("id","coord");
+            $(coord).text("Coordenadas");
+            $(tr1).append(coord);
+            var fecha = document.createElement("th");
+            $(fecha).attr("scope","col");
+            $(fecha).attr("id","fecha");
+            $(fecha).text("Fecha");
+            $(tr1).append(fecha);
+            var hora = document.createElement("th");
+            $(hora).attr("scope","col");
+            $(hora).attr("id","hora");
+            $(hora).text("Hora");
+            $(tr1).append(hora);
+            var nombreCir = document.createElement("th");
+            $(nombreCir).attr("scope","col");
+            $(nombreCir).attr("id","nombreCir");
+            $(nombreCir).text("Nombre Circuito");
+            $(tr1).append(nombreCir);
+            $(head).append(tr1);
+            $(tabla).append(head);
+            
+
+            $.each($("Race",this.last_api_result),function(i,carrera){
+                var tr1 = document.createElement("tr");
+                var nombreC = document.createElement("th");
+                $(nombreC).attr("scope","row");
+                $(nombreC).attr("id",$("RaceName",carrera).text());
+                $(nombreC).attr("headers","nombreCa");
+                $(nombreC).text($("RaceName",carrera).text());
+                $(tr1).append(nombreC);
+                var temp = document.createElement("td");
+                $(temp).attr("scope","row");
+                $(temp).attr("headers",$("RaceName",carrera).text()+" temp");
+                $(temp).text($(carrera,this.last_api_result).attr("season"));
+                $(tr1).append(temp);
+                var ronda = document.createElement("td");
+                $(ronda).attr("scope","row");
+                $(ronda).attr("headers",$("RaceName",carrera).text()+" ronda");
+                $(ronda).text($(carrera,this.last_api_result).attr("round"));
+                $(tr1).append(ronda);
+                var coord = document.createElement("td");
+                $(coord).attr("scope","row");
+                $(coord).attr("headers",$("RaceName",carrera).text()+" coord");
+                $(coord).text($("Location",$("Circuit",carrera)).attr("lat")+", "+$("Location",$("Circuit",carrera)).attr("long"));
+                $(tr1).append(coord);
+                var fecha = document.createElement("td");
+                $(fecha).attr("scope","row");
+                $(fecha).attr("headers",$("RaceName",carrera).text()+" fecha");
+                var primera =$("Date",carrera).text().match(/\d{4}-\d{2}-\d{2}/);
+                $(fecha).text(primera[0]);
+                $(tr1).append(fecha);
+                var hora = document.createElement("td");
+                $(hora).attr("scope","row");
+                $(hora).attr("headers",$("RaceName",carrera).text()+" hora");
+                var primera =$("Time",carrera).text().match(/\d{2}:\d{2}:\d{2}/);
+                $(hora).text(primera[0]);
+                $(tr1).append(hora);
+                var nombreCir = document.createElement("td");
+                $(nombreCir).attr("scope","row");
+                $(nombreCir).attr("headers",$("RaceName",carrera).text()+" nombreCir");
+                $(nombreCir).text($("CircuitName",$("Circuit",carrera)).text());
+                $(tr1).append(nombreCir);
+                $(body).append(tr1);
+            })
+
+            $(tabla).append(body);
+            $("section").append(tabla);
+
+        
+
+
+    }
+}
+
+var agenda = new Agenda();

@@ -1,0 +1,57 @@
+/*Javier Monteserín Rodríguez UO288524*/
+
+/*Especifidad 001 */
+
+section{
+    max-width: 40em;
+    max-height: 5em;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    margin: auto;
+ 
+}
+
+
+/*Especifidad 001 */
+p {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 1px solid #000; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+ }
+/*Especifidad 011,011,011 */
+ p[data-posJ="0"],p[data-posJ="3"],p[data-posJ="6"] {
+    border-left: 4px solid #333;
+}
+
+/*Especifidad 011 */
+p[data-posJ="8"] {
+    border-right: 4px solid #333;
+}
+/*Especifidad 011 */
+p[data-posI="0"] {
+    border-top: 4px solid #333;
+}
+/*Especifidad 011,011,011 */
+p[data-posI="8"],p[data-posI="2"],p[data-posI="5"]  {
+    border-bottom: 4px solid #333;
+}
+/*Especifidad 011 */
+ p[data-state="blocked"]{
+    background-color: #fdfd96;
+ }
+/*Especifidad 001 */
+ h2{
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
