@@ -1,0 +1,31 @@
+"use strict";
+class Fondo{
+    constructor(pais,capital,coordenadasCapital){
+        this.pais=pais;
+        this.capital=capital;
+        this.coordenadasCapital=coordenadasCapital;
+    }
+
+    getImagen(){
+        var flickrAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+        $.getJSON(flickrAPI,{
+            tags: this.capital,
+            tagmode: "any",
+            format: "json"
+        })
+        .done(function(data){
+            var numeroAleatorio = Math.floor(Math.random() * data.items.length-1);
+            var foto = data.items[numeroAleatorio].media.m;
+            var fondo = foto.replace("_m","_b");
+            $("body").css({
+                "background-image": "url('" + fondo + "')"
+                ,"background-size": "cover"
+            });
+            
+               
+        })
+    }
+}
+
+var fondo = new Fondo("South Sudan","Juba","39.1404500° -121.6169100°");
+fondo.getImagen();
