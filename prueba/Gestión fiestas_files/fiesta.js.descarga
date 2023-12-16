@@ -1,0 +1,74 @@
+"use strict";
+
+class Fiesta{
+    crearFormulario(){
+        var section = document.createElement("section");
+        var h3 = document.createElement("h3");
+        $(h3).text("Inicio sesión organizador");
+        var formulario = document.createElement("form");
+        $(formulario).attr("action","#").attr("method","post").attr("name","registro");
+        var inicio = document.createElement("label");
+        $(inicio).text("Intruzca su correo electrónico: ").attr("data-type","formulario").attr("for","inicio");
+        var inicioi = document.createElement("input");
+        $(inicioi).attr("type","text").attr("name","inicio").attr("id","inicio");
+        $(formulario).append(inicio);
+        $(formulario).append(inicioi);
+        var boton = document.createElement("input");
+        $(boton).attr("type","submit").attr("name","botonRegistro").attr("value","Iniciar sesión");
+        $(formulario).append(boton);
+        $(section).append(formulario);
+        $("body").append(h3);
+        $("body").append(section);
+    }
+
+    crearFiesta(){
+        var section = document.createElement("section");
+        var h3 = document.createElement("h3");
+        $(h3).text("Crear fiesta");
+        var formulario = document.createElement("form");
+        $(formulario).attr("action","#").attr("method","post").attr("name","fiesta");
+        var inicio1 = document.createElement("label");
+        $(inicio1).attr("for","inicio1");
+        $(inicio1).text("Nombre de la fiesta: ");
+        var inicioi = document.createElement("input");
+        $(inicioi).attr("type","text").attr("name","nombreFiesta").attr("id","inicio1");
+        $(formulario).append(inicio1);
+        $(formulario).append(inicioi);
+        var inicio2 = document.createElement("label");
+        $(inicio2).text("Fecha de la fiesta: ");
+        $(inicio2).attr("for","inicio2");
+        var inicioi2 = document.createElement("input");
+        $(inicioi2).attr("type","date").attr("name","fechaFiesta").attr("id","inicio2");
+        $(formulario).append(inicio2);
+        $(formulario).append(inicioi2);
+        var inicio3 = document.createElement("label");
+        $(inicio3).text("Local de la fiesta: ");
+        $(inicio3).attr("for","inicio3");
+        var inicioi3 = document.createElement("input");
+        $(inicioi3).attr("type","text").attr("name","localFiesta").attr("id","inicio3");
+        $(formulario).append(inicio3);
+        $(formulario).append(inicioi3);
+        var inicio4 = document.createElement("label");
+        $(inicio4).text("Precio de la entrada: ")
+        $(inicio4).attr("for","inicio4");
+        var inicioi4 = document.createElement("input");
+        $(inicioi4).attr("type","int").attr("name","precioFiesta").attr("id","inicio4");
+        $(formulario).append(inicio4);
+        $(formulario).append(inicioi4);
+        var inicio5 = document.createElement("label");
+        $(inicio5).text("Correo organizador: ");
+        $(inicio4).attr("for","inicio5");
+        var inicioi5 = document.createElement("input");
+        $(inicioi5).attr("type","text").attr("name","correoOrganizador").attr("id","inicio5");
+        $(formulario).append(inicio5);
+        $(formulario).append(inicioi5);
+        var boton = document.createElement("input");
+        $(boton).attr("type","submit").attr("name","botonFiesta").attr("value","Crear fiesta");
+        $(formulario).append(boton);
+        $(section).append(formulario);
+        $("body").append(h3);
+        $("body").append(section);
+    }
+}
+
+var f = new Fiesta();

@@ -1,0 +1,369 @@
+"use strict";
+class Crucigrama{
+    constructor(){
+        this.cadena="4,*,.,=,12,#,#,#,5,#,#,*,#,/,#,#,#,*,4,-"+
+        ",.,=,.,#,15,#,.,*,#,=,#,=,#,/,#,=,.,#,3,#,4,*,.,=,20,=,#,#,#,#,#,=,#,#,8,#,9,-,.,=,3,#,.,#,#,-"+
+        ",#,+,#,#,#,*,6,/,.,=,.,#,#,#,.,#,#,=,#,=,#,#,#,=,#,#,6,#,8,*,.,=,16";
+        //this.cadena="12,*,.,=,36,#,#,#,15,#,#,*,#,/,#,#,#,*,.,-"+
+        //",.,=,.,#,55,#,.,*,#,=,#,=,#,/,#,=,.,#,15,#,9,*,.,=,45,=,#,#,#,#,#,=,#,#,72,#,20,-,.,=,11,#,.,#,#,-"+
+        //",#,+,#,#,#,*,56,/,.,=,.,#,#,#,.,#,#,=,#,=,#,#,#,=,#,#,12,#,16,*,.,=,32";
+        //this.cadena="4,.,.,=,36,#,#,#,25,#,#,*,#,.,#,#,#,.,.,-"+
+        //",.,=,.,#,15,#,.,*,#,=,#,=,#,.,#,=,.,#,18,#,6,*,.,=,30,=,#,#,#,#,#,=,#,#,56,#,9,-"+
+        //",.,=,3,#,.,#,#,*,#,+,#,#,#,*,20,.,.,=,18,#,#,#,.,#,#,=,#,=,#,#,#,=,#,#,18,#,24,.,.,=,72";
+        this.filas=11;
+        this.columnas=9;
+        this.tablero = new Array(11);
+        for (var i = 0; i < this.filas; i++) {
+            this.tablero[i] = new Array(9);
+        }
+        this.init_time;
+        this.end_time;
+        this.shift=false;
+        this.start();
+
+    }
+
+    start(){
+        var contador=0;
+        var lista = this.cadena.split(",");
+        for(var i=0;i<this.filas;i++){
+            for(var j=0;j<this.columnas;j++){
+                if(lista[contador]=='.'){
+                    this.tablero[i][j]= '0';
+                }
+                else if(lista[contador]=="#"){
+                    this.tablero[i][j]= "-1";
+                }
+                else{
+                    this.tablero[i][j]=lista[contador];
+                }
+                contador++;
+            }
+        }
+    }
+
+    paintMathword(){
+        var section = document.createElement('section');
+        $(section).attr("data-state","crucigrama");
+        for(var i=0;i<this.filas;i++){
+            for(var j=0;j<this.columnas;j++){
+                const parrafo = document.createElement('p');
+                if(this.tablero[i][j]=="0"){
+                    $(parrafo).attr("data-state","clicked");
+                    $(parrafo).click(this.clicar.bind(this));
+                }
+                else if(this.tablero[i][j]=="-1"){
+                    $(parrafo).attr("data-state","empty");
+                }
+                else{
+                    $(parrafo).attr("data-state","blocked");
+                    $(parrafo).text(this.tablero[i][j]);
+                }
+                $(parrafo).attr("data-posI",i);
+                $(parrafo).attr("data-posJ",j);
+                $(section).append(parrafo);
+            }
+        }
+        $("article").append(section);
+        this.init_time= new Date();
+    }
+
+    #buscarSeleccionada(){
+        var casillas = document.querySelectorAll("p");
+        for(var casilla of casillas){
+            if($(casilla).attr("data-state")=="selected")
+                return casilla;
+        }
+        return null;
+        }
+
+    clicar(event){
+        var casillaSeleccionada = event.target;
+        const casilla= this.#buscarSeleccionada();
+        if(casilla!=null){
+            $(casilla).attr("data-state","clicked");
+        }
+
+        $(casillaSeleccionada).attr("data-state","selected");
+        
+    }
+
+    check_win_condition(){
+        for(var i=0;i<this.filas;i++){
+            for(var j=0;j<this.columnas;j++){
+                if(this.tablero[i][j]==0){
+                    return false;
+                }
+            }
+      }
+      return true;
+    }
+
+    calculate_date_difference(){
+        var final = this.end_time.getTime()-this.init_time.getTime();
+        var segundos = Math.floor(final/1000);
+        return segundos;
+    }
+
+    #convertirNumero(numero){
+        switch(numero){
+            case 49:
+                return 1;
+            case 50:
+                return 2;
+            case 51:
+                return 3;
+            case 52:
+                return 4;
+            case 53:
+                return 5;
+            case 54:
+                return 6;
+            case 55:
+                return 7;
+            case 56:
+                return 8;
+            case 57:
+                return 9;
+            case 187:
+                return "+";
+            default:
+                return "-";
+        }
+    }
+
+    #comprobarElemento(casilla,numero){
+        var expression_row = true;
+        var expression_column = true;
+        var fila = $(casilla).attr("data-posI");
+        var columna = $(casilla).attr("data-posJ");
+        this.tablero[fila][columna]=numero;
+        var expression_row= this.#comprobarFila(fila,columna);
+        var expression_column= this.#comprobarColumna(fila,columna);
+
+        if(expression_row && expression_column){
+            return true;
+        }
+
+        return false;
+
+    }
+
+    #comprobarFila(fila,columna){
+        var columna_igual=parseInt(columna)+1;
+        var encontrada=true;
+        var first_number;
+        var second_number;
+        var expression;
+        var result;
+        if(!(columna==8)){
+            if(this.tablero[fila][columna_igual]!=-1){
+                while(encontrada){
+                    if(this.tablero[fila][columna_igual]=="="){
+                        encontrada=false;
+                    }
+                    else{
+                    columna_igual+=1;
+                    }
+                }
+                var numero =/^[1-9]\d*$/;
+                var operador = /^[+\-*/]$/
+                first_number=this.tablero[fila][columna_igual-3];
+                second_number=this.tablero[fila][columna_igual-1];
+                expression=this.tablero[fila][columna_igual-2];
+                result=this.tablero[fila][columna_igual+1];
+                if(first_number!="0" && second_number!="0" && expression!="0" && result!="0"){
+                    if(!(numero.test(first_number) && numero.test(second_number) && operador.test(expression))){
+                        return false;
+                    }
+                   var conjunto = [first_number,expression,second_number];
+                   var operacion = conjunto.join("");
+                   if(eval(operacion)==result){
+                    return true;
+                   }
+                   else{
+                    return false;
+                   }
+                }
+            }
+        }
+
+        return true;
+        }
+    #comprobarColumna(fila,columna){
+        var fila_igual=parseInt(fila)+1;
+        var encontrada=true;
+        var first_number;
+        var second_number;
+        var expression;
+        var result;
+        if(!(fila==10)){
+            if(this.tablero[fila_igual][columna]!=-1){
+                while(encontrada){
+                    if(this.tablero[fila_igual][columna]=="="){
+                        encontrada=false;
+                    }
+                    else{
+                    fila_igual+=1;
+                    }
+                }
+                first_number=this.tablero[fila_igual-3][columna];
+                second_number=this.tablero[fila_igual-1][columna];
+                expression=this.tablero[fila_igual-2][columna];
+                result=this.tablero[fila_igual+1][columna];
+                if(first_number!="0" && second_number!="0" && expression!="0" && result!="0"){
+                   var conjunto = [first_number,expression,second_number];
+                   var operacion = conjunto.join("");
+                   if(eval(operacion)==result){
+                    return true;
+                   }
+                   else{
+                    return false;
+                   }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    comprobarElement(event){
+        var ek = event.keyCode;
+        if(ek==16){
+            this.shift=true;
+            this.introduceElement(null);
+        }
+        if(!(ek==49 || ek==50 || ek==51 || ek==52 || ek==53 || ek==54 || ek==55 || ek==56 || ek==57 || ek==187 || ek==189)){
+            this.introduceElement(null);
+       }
+       else{
+        var numero = this.#convertirNumero(ek)+'';
+        if(this.shift==true){
+            if(numero=="7"){
+                numero="/";
+            }
+            if(numero=="+"){
+                numero="*";
+            }
+            this.shift=false;
+        }
+        this.introduceElement(numero);
+
+    }
+    }
+
+    introduceElement(numero){
+        const casilla= this.#buscarSeleccionada();
+        if(numero==null){
+            return
+        }
+        else if(casilla==null ){
+            alert("Es necesario seleccionar una casilla en la que introducir el número");
+       }
+       else{
+            
+           if(this.#comprobarElemento(casilla,numero)){
+            $(casilla).attr("data-state","correct");
+            $(casilla).text("");
+            var contenido =document.createTextNode(numero);
+            casilla.appendChild(contenido);
+           }
+           else{
+            var fila = $(casilla).attr("data-posI");
+            var columna = $(casilla).attr("data-posJ");
+            this.tablero[fila][columna]="0";
+            $(casilla).attr("data-state","clicked");
+            alert("El elemento no es válido");
+           }
+       }
+     if(this.check_win_condition()){
+        this.end_time= new Date();
+        alert("Oleee, has completado el crucigrama en "+this.calculate_date_difference()+" segundos.");
+        this.createRecordForm();
+     }
+    }
+
+    createRecordForm(){
+        var h3 = document.createElement("h3");
+        $(h3).text("Formulario para la clasificación: ");
+        $("article").append(h3);
+        var article = document.createElement("section");
+        $(article).attr("data-type","formulario");
+        var nombre = document.createElement("label");
+        $(nombre).text("Introduzca su nombre: ").attr("data-type","formulario").attr("for","nombre");
+        var nombrei = document.createElement("input");
+        $(nombrei).attr("type","text").attr("name","nombre").attr("id","nombre");
+        var apellido = document.createElement("label");
+        $(apellido).text("Introduzca sus apellidos: ").attr("data-type","formulario").attr("for","apellido");
+        var apellidoi = document.createElement("input");
+        $(apellidoi).attr("type","text").attr("name","apellidos").attr("id","apellido");
+        $(apellido).append(apellidoi);
+        var dificultad = document.createElement("label");
+        $(dificultad).text("Dificultad del juego: ").attr("data-type","formulario").attr("for","dificultad");
+        var dificultadi = document.createElement("input");
+        $(dificultadi).attr("type","text").attr("name","dificultad").attr("id","dificultad").attr("value",this.#calcularDificultad()).attr("readonly","readonly");
+        $(dificultad).append(dificultadi);
+        var tiempo = document.createElement("label");
+        $(tiempo).text("Tiempo de juego: ").attr("data-type","formulario").attr("for","tiempo");
+        var tiempoi = document.createElement("input");
+        $(tiempoi).attr("type","text").attr("name","tiempo").attr("id","tiempo").attr("value",this.calculate_date_difference()).attr("readonly","readonly");
+        $(tiempo).append(tiempoi);
+        var boton = document.createElement("input");
+        $(boton).attr("type","submit").attr("value","Registrarse");
+        var formulario = document.createElement("form");
+        $(formulario).attr("action","#").attr("method","post").attr("name","registro");
+        $(formulario).append(nombre);
+        $(formulario).append(nombrei);
+        $(formulario).append(apellido);
+        $(formulario).append(apellidoi);
+        $(formulario).append(dificultad);
+        $(formulario).append(dificultadi);
+        $(formulario).append(tiempo);
+        $(formulario).append(tiempoi);
+        $(formulario).append(boton);
+        $(article).append(formulario);
+        $("article").append(article);
+        
+
+    }
+
+    prepararClasificacion(){
+        var h3 = document.createElement("h3");
+        $(h3).text("Clasificaciones: ");
+        $("article").append(h3);
+        var section = document.createElement("section");
+        $(section).attr("data-type","clasificaciones");
+        var lista = document.createElement("ol");
+        $(section).append(lista);
+        $("article").append(section);
+
+    }
+
+    
+
+    #calcularDificultad(){
+        var facil="4,*,.,=,12,#,#,#,5,#,#,*,#,/,#,#,#,*,4,-"+
+        ",.,=,.,#,15,#,.,*,#,=,#,=,#,/,#,=,.,#,3,#,4,*,.,=,20,=,#,#,#,#,#,=,#,#,8,#,9,-,.,=,3,#,.,#,#,-"+
+        ",#,+,#,#,#,*,6,/,.,=,.,#,#,#,.,#,#,=,#,=,#,#,#,=,#,#,6,#,8,*,.,=,16";
+        var medio="12,*,.,=,36,#,#,#,15,#,#,*,#,/,#,#,#,*,.,-"+
+        ",.,=,.,#,55,#,.,*,#,=,#,=,#,/,#,=,.,#,15,#,9,*,.,=,45,=,#,#,#,#,#,=,#,#,72,#,20,-,.,=,11,#,.,#,#,-"+
+        ",#,+,#,#,#,*,56,/,.,=,.,#,#,#,.,#,#,=,#,=,#,#,#,=,#,#,12,#,16,*,.,=,32";
+        var dificil="4,.,.,=,36,#,#,#,25,#,#,*,#,.,#,#,#,.,.,-"+
+        ",.,=,.,#,15,#,.,*,#,=,#,=,#,.,#,=,.,#,18,#,6,*,.,=,30,=,#,#,#,#,#,=,#,#,56,#,9,-"+
+        ",.,=,3,#,.,#,#,*,#,+,#,#,#,*,20,.,.,=,18,#,#,#,.,#,#,=,#,=,#,#,#,=,#,#,18,#,24,.,.,=,72";
+        if(this.cadena==facil){
+            return "fácil";
+        }
+        else if(this.cadena==medio){
+            return "intermedio";
+        }
+        else{
+            return "difícil";
+        }
+
+    }
+
+    
+}
+
+var crucigrama = new Crucigrama();
