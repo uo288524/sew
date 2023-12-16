@@ -1,0 +1,111 @@
+"use strict";
+class Pais{
+    
+    constructor(nombrePais,nombreCapital,poblacion){
+    this.nombrePais=nombrePais;
+    this.nombreCapital=nombreCapital;
+    this.poblacion = poblacion;
+    this.formaGobierno = "";
+    this.coordenadasCapital= "";
+    this.religion= "";
+    
+    }
+
+    setAdicionales(formaGobierno,coordenadasCapital,religion){
+        this.formaGobierno = formaGobierno;
+        this.coordenadasCapital= coordenadasCapital;
+        this.religion= religion;
+    }
+
+    getNombre(){
+        return this.nombrePais;
+    }
+
+    getCapital(){
+        return this.nombreCapital;
+    }
+
+    getInformacionAdicional(){
+        return "<ul><li> Población: "+this.poblacion+" </li><li> Forma de Gobierno: "+
+        this.formaGobierno+" </li><li> Religión: "+this.religion+" </li></ul>";
+    }
+
+    escribeCoordenadas(){
+      window.document.write("<p>Coordenadas de la capital: "+this.coordenadasCapital+" </p>");
+    }
+
+    cargarTiempo(){
+        var h2 = document.createElement("h2");
+        var art = document.createElement("article");
+        $(h2).text("Predicción para los próximos 5 días en "+this.getCapital()+", "+this.getNombre());
+        $("body").append(h2);
+        var coordenadas = this.coordenadasCapital.split(",");
+        var latitud = parseFloat(coordenadas[0]);
+        var longitud = parseFloat(coordenadas[1]);
+        var unidades ="metric";
+        var idioma ="es";
+        var apikey = "55b085b1038d51a9ff59da110180fd99";
+        var url = "http://api.openweathermap.org/data/2.5/forecast?lat="+latitud+"&lon="+longitud+"&appid="+apikey+"&units="+unidades+"&lang="+idioma;
+        $.ajax({
+            dataType: "json",
+            url: url,
+            method: 'GET',
+            success: function(datos){
+                    $.each(datos.list, function(i,lista){
+                        var a=lista.rain;
+                        var fecha = lista.dt_txt.split(" ");
+                        if(fecha[1]==='15:00:00'){
+                            var sec = document.createElement("section");
+                            var title = document.createElement("h3");
+                            var output = document.createElement("div");
+                            var imagen = document.createElement("img");
+                            var ul = document.createElement("ul");
+                            $(title).text(fecha[0]);
+                            $(imagen).attr("src","http://openweathermap.org/img/wn/"+lista.weather[0].icon+"@2x.png");
+                            $(imagen).attr("width",50);
+                            $(imagen).attr("height",50);
+                            $(imagen).attr("alt",lista.weather[0].description);
+                            var o1 =  document.createElement("li");
+                            $(o1).text("Temperatura desde "+lista.main.temp_min+" hasta "+lista.main.temp_max+" ºC");
+                            $(ul).append(o1);
+                            var o2 =  document.createElement("li");
+                            $(o2).text(lista.main.humidity+"%");
+                            $(ul).append(o2);
+                            var o3 = document.createElement("li");
+                            var lluvia = lista.rain;
+                            if(lluvia==null){
+                                $(o3).text("No hay lluvia");
+                            }else{
+                                $(o3).text(lluvia.rain["3h"]+"mm3");
+                            }
+                            $(ul).append(o3);
+                            $(output).append(title);
+                            $(output).append(imagen);
+                            $(sec).append(output);
+                            $(sec).append(ul);
+                            $(art).append(sec);
+                            $("body").append(art);
+                        }
+                    })
+
+                    
+                    
+                   
+                },
+            error:function(){
+                $("h3").html("¡Tenemos problemas! No puedo obtener JSON de <a href='http://openweathermap.org'>OpenWeatherMap</a>"); 
+                }
+        });
+
+    }
+
+}
+
+var sudanDelSur = new Pais("Sudan del Sur","Juba","10.75 millones");
+sudanDelSur.setAdicionales("República federal presidencialista",
+"4.8517, 31.5825","cristianismo");
+sudanDelSur.getNombre();
+sudanDelSur.getCapital();
+sudanDelSur.getInformacionAdicional();
+sudanDelSur.escribeCoordenadas();
+sudanDelSur.cargarTiempo();

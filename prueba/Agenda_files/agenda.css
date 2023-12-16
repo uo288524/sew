@@ -1,0 +1,19 @@
+/*Javier Monteserín Rodríguez UO288524*/
+/*Especifidad 001 */
+section{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1em;
+}
+/*Especifidad 001 */
+button{
+    font-size: 1.2em; /* Tamaño de letra */
+}
+/*Especifidad 001 */
+body{
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+}
