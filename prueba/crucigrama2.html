@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://localhost/sew/EscritorioVirtual/crucigrama.php -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <!-- Datos que describen el documento -->
+ 
+ <title>Escritorio Virtual: Crucigrama matemático</title>
+ <link rel="stylesheet" type="text/css" href="./crucigrama2_files/estilo.css">
+ <link rel="stylesheet" type="text/css" href="./crucigrama2_files/layout.css">
+ <link rel="stylesheet" type="text/css" href="./crucigrama2_files/crucigrama.css">
+ <link rel="stylesheet" type="text/css" href="./crucigrama2_files/estilo_botonera.css">
+ <link rel="icon" href="http://localhost/sew/EscritorioVirtual/multimedia/imagenes/favicon.ico" sizes="32x32" type="image/vnd.microsoft.icon">
+ <script src="./crucigrama2_files/jquery-3.7.1.min.js.descarga" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+ <script src="./crucigrama2_files/crucigrama.js.descarga"></script>
+</head>
+<body onkeydown="crucigrama.comprobarElement(event)">
+
+
+
+    <header>
+        <h1> Escritorio Virtual </h1>
+       
+        <nav>
+           <a title="index" href="http://localhost/sew/EscritorioVirtual/index.html" accesskey="y" tabindex="1">Index</a>
+           <a title="sobremi" href="http://localhost/sew/EscritorioVirtual/sobremi.html" accesskey="r" tabindex="2">Sobre mí</a>
+           <a title="noticias" href="http://localhost/sew/EscritorioVirtual/noticias.html" accesskey="n" tabindex="3">Noticias</a>
+           <a title="agenda" href="http://localhost/sew/EscritorioVirtual/agenda.html" accesskey="g" tabindex="4">Agenda</a>
+           <a title="meteorilogia" href="http://localhost/sew/EscritorioVirtual/meteorologia.html" accesskey="m" tabindex="5">Meteorología</a>
+           <a title="viajes" href="http://localhost/sew/EscritorioVirtual/viajes.php" accesskey="k" tabindex="6">Viajes</a>
+           <a title="juegos" href="http://localhost/sew/EscritorioVirtual/juegos.html" accesskey="j" tabindex="7">Juegos</a>
+           
+           </nav>
+       </header>
+
+    
+<h2>Crucigrama matemático</h2>
+<section data-type="ayuda">
+<h3>Ayuda</h3>
+<p>Gracias por jugar a mi crucigrama matemático. En este juego tendrás que rellenar los huecos vacíos
+    de tal forma que todas las operaciones del crucigrama cobren sentido. Una vez que has rellenado una casilla
+    y después te das cuenta que puede ser otro valor podrás cambiarlo volviendo a clicar en ella.
+    En algunos niveles tendrás que incluso insertar los operadores: +,-,*,/. 
+    Entiendo que si no estás habituado a usar el ordenador no sabes donde están, el + y el - se ven a simple vista
+    en el teclado y solo tienes que pulsar en ellos; par el operador * y el /, sería una combinación de la tecla shift
+    (la que tiene una flechita) y en el caso de la mayoría de teclados para el * en el mismo que está el + y para el / con 
+    la tecla donde está el 7</p>
+</section>
+<section data-type="botonera">
+    <h3>Botonera</h3>
+    <button onclick="crucigrama.introduceElement(1)">1</button>
+    <button onclick="crucigrama.introduceElement(2)">2</button>
+    <button onclick="crucigrama.introduceElement(3)">3</button>
+    <button onclick="crucigrama.introduceElement(4)">4</button>
+    <button onclick="crucigrama.introduceElement(5)">5</button>
+    <button onclick="crucigrama.introduceElement(6)">6</button>
+    <button onclick="crucigrama.introduceElement(7)">7</button>
+    <button onclick="crucigrama.introduceElement(8)">8</button>
+    <button onclick="crucigrama.introduceElement(9)">9</button>
+    <button onclick="crucigrama.introduceElement(&#39;*&#39;)">*</button>
+    <button onclick="crucigrama.introduceElement(&#39;+&#39;)">+</button>
+    <button onclick="crucigrama.introduceElement(&#39;-&#39;)">-</button>
+    <button onclick="crucigrama.introduceElement(&#39;/&#39;)">/</button>
+</section>
+<h3>Tablero</h3>
+
+
+
+<script>
+     $("body").attr("onkeydown","crucigrama.comprobarElement(event)");
+    crucigrama.paintMathword();
+</script><main data-state="crucigrama"><p data-state="blocked" data-posi="0" data-posj="0">4</p><p data-state="blocked" data-posi="0" data-posj="1">*</p><p data-state="correct" data-posi="0" data-posj="2">3</p><p data-state="blocked" data-posi="0" data-posj="3">=</p><p data-state="blocked" data-posi="0" data-posj="4">12</p><p data-state="empty" data-posi="0" data-posj="5"></p><p data-state="empty" data-posi="0" data-posj="6"></p><p data-state="empty" data-posi="0" data-posj="7"></p><p data-state="blocked" data-posi="0" data-posj="8">5</p><p data-state="empty" data-posi="1" data-posj="0"></p><p data-state="empty" data-posi="1" data-posj="1"></p><p data-state="blocked" data-posi="1" data-posj="2">*</p><p data-state="empty" data-posi="1" data-posj="3"></p><p data-state="blocked" data-posi="1" data-posj="4">/</p><p data-state="empty" data-posi="1" data-posj="5"></p><p data-state="empty" data-posi="1" data-posj="6"></p><p data-state="empty" data-posi="1" data-posj="7"></p><p data-state="blocked" data-posi="1" data-posj="8">*</p><p data-state="blocked" data-posi="2" data-posj="0">4</p><p data-state="blocked" data-posi="2" data-posj="1">-</p><p data-state="correct" data-posi="2" data-posj="2">1</p><p data-state="blocked" data-posi="2" data-posj="3">=</p><p data-state="correct" data-posi="2" data-posj="4">3</p><p data-state="empty" data-posi="2" data-posj="5"></p><p data-state="blocked" data-posi="2" data-posj="6">15</p><p data-state="empty" data-posi="2" data-posj="7"></p><p data-state="correct" data-posi="2" data-posj="8">4</p><p data-state="blocked" data-posi="3" data-posj="0">*</p><p data-state="empty" data-posi="3" data-posj="1"></p><p data-state="blocked" data-posi="3" data-posj="2">=</p><p data-state="empty" data-posi="3" data-posj="3"></p><p data-state="blocked" data-posi="3" data-posj="4">=</p><p data-state="empty" data-posi="3" data-posj="5"></p><p data-state="blocked" data-posi="3" data-posj="6">/</p><p data-state="empty" data-posi="3" data-posj="7"></p><p data-state="blocked" data-posi="3" data-posj="8">=</p><p data-state="correct" data-posi="4" data-posj="0">2</p><p data-state="empty" data-posi="4" data-posj="1"></p><p data-state="blocked" data-posi="4" data-posj="2">3</p><p data-state="empty" data-posi="4" data-posj="3"></p><p data-state="blocked" data-posi="4" data-posj="4">4</p><p data-state="blocked" data-posi="4" data-posj="5">*</p><p data-state="correct" data-posi="4" data-posj="6">5</p><p data-state="blocked" data-posi="4" data-posj="7">=</p><p data-state="blocked" data-posi="4" data-posj="8">20</p><p data-state="blocked" data-posi="5" data-posj="0">=</p><p data-state="empty" data-posi="5" data-posj="1"></p><p data-state="empty" data-posi="5" data-posj="2"></p><p data-state="empty" data-posi="5" data-posj="3"></p><p data-state="empty" data-posi="5" data-posj="4"></p><p data-state="empty" data-posi="5" data-posj="5"></p><p data-state="blocked" data-posi="5" data-posj="6">=</p><p data-state="empty" data-posi="5" data-posj="7"></p><p data-state="empty" data-posi="5" data-posj="8"></p><p data-state="blocked" data-posi="6" data-posj="0">8</p><p data-state="empty" data-posi="6" data-posj="1"></p><p data-state="blocked" data-posi="6" data-posj="2">9</p><p data-state="blocked" data-posi="6" data-posj="3">-</p><p data-state="correct" data-posi="6" data-posj="4">6</p><p data-state="blocked" data-posi="6" data-posj="5">=</p><p data-state="blocked" data-posi="6" data-posj="6">3</p><p data-state="empty" data-posi="6" data-posj="7"></p><p data-state="correct" data-posi="6" data-posj="8">4</p><p data-state="empty" data-posi="7" data-posj="0"></p><p data-state="empty" data-posi="7" data-posj="1"></p><p data-state="blocked" data-posi="7" data-posj="2">-</p><p data-state="empty" data-posi="7" data-posj="3"></p><p data-state="blocked" data-posi="7" data-posj="4">+</p><p data-state="empty" data-posi="7" data-posj="5"></p><p data-state="empty" data-posi="7" data-posj="6"></p><p data-state="empty" data-posi="7" data-posj="7"></p><p data-state="blocked" data-posi="7" data-posj="8">*</p><p data-state="blocked" data-posi="8" data-posj="0">6</p><p data-state="blocked" data-posi="8" data-posj="1">/</p><p data-state="correct" data-posi="8" data-posj="2">3</p><p data-state="blocked" data-posi="8" data-posj="3">=</p><p data-state="correct" data-posi="8" data-posj="4">2</p><p data-state="empty" data-posi="8" data-posj="5"></p><p data-state="empty" data-posi="8" data-posj="6"></p><p data-state="empty" data-posi="8" data-posj="7"></p><p data-state="correct" data-posi="8" data-posj="8">4</p><p data-state="empty" data-posi="9" data-posj="0"></p><p data-state="empty" data-posi="9" data-posj="1"></p><p data-state="blocked" data-posi="9" data-posj="2">=</p><p data-state="empty" data-posi="9" data-posj="3"></p><p data-state="blocked" data-posi="9" data-posj="4">=</p><p data-state="empty" data-posi="9" data-posj="5"></p><p data-state="empty" data-posi="9" data-posj="6"></p><p data-state="empty" data-posi="9" data-posj="7"></p><p data-state="blocked" data-posi="9" data-posj="8">=</p><p data-state="empty" data-posi="10" data-posj="0"></p><p data-state="empty" data-posi="10" data-posj="1"></p><p data-state="blocked" data-posi="10" data-posj="2">6</p><p data-state="empty" data-posi="10" data-posj="3"></p><p data-state="blocked" data-posi="10" data-posj="4">8</p><p data-state="blocked" data-posi="10" data-posj="5">*</p><p data-state="correct" data-posi="10" data-posj="6">2</p><p data-state="blocked" data-posi="10" data-posj="7">=</p><p data-state="blocked" data-posi="10" data-posj="8">16</p></main>
+
+<section data-type="formulario"><h3>Formulario para la clasificación: </h3><form action="http://localhost/sew/EscritorioVirtual/crucigrama.php#" method="post" name="registro"><label data-type="formulario" for="nombre">Introduzca su nombre: </label><input type="text" name="nombre" id="nombre" required="required"><label data-type="formulario" for="apellido">Introduzca sus apellidos: </label><input type="text" name="apellidos" id="apellido" required="required"><label data-type="formulario" for="dificultad">Dificultad del juego: </label><input type="text" name="dificultad" id="dificultad" value="fácil" readonly="readonly"><label data-type="formulario" for="tiempo">Tiempo de juego: </label><input type="text" name="tiempo" id="tiempo" value="27" readonly="readonly"><input type="submit" value="Registrarse"></form></section></body></html>
