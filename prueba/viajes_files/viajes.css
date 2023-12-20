@@ -1,0 +1,34 @@
+/*Javier Monteserín Rodríguez UO288524*/
+/*Especifidad 100,011 */
+#mapa, section[data-state="mapa"]{
+    width:25em; 
+    height:25em; 
+   }
+/*Especifidad 011 */
+   section[data-state="xml"]{
+    border: 1px solid #000; 
+    width:30em;
+    padding: 1em;
+     /* color del body de estilo.css*/
+    background-color: #E8E4FC;
+   }
+/*Especifidad 011 */
+   section[data-state="boton"]{
+    display: flex;
+    flex-direction: column;
+   }
+/*Especifidad 001 */
+   article{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+   }
+/*Especifidad 001 */
+   polyline{
+    width:15em; 
+    height:15em;
+   }
+/*Especifidad 001 */
+   h2{
+      width: 100%;
+   }

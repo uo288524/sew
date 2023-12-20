@@ -1,0 +1,189 @@
+"use strict";
+class Sudoku{
+    constructor(){
+        this.cadena="3.4.69.5....27...49.2..4....2..85.198.9...2.551.39..6....8..5.32...46....4.75.9.6";
+        this.filas=9;
+        this.columnas=9;
+        this.tablero = [];
+        this.metodoListener = this.clicar.bind(this);
+        for (var i = 0; i < this.filas; i++) {
+            this.tablero[i] = [];
+        }
+        this.start();
+    }
+    start(){
+        var contador=0;
+        for(var i=0;i<this.filas;i++){
+            for(var j=0;j<this.columnas;j++){
+                var aux= this.cadena[contador];
+                if(aux=='.'){
+                    this.tablero[i][j]= '0';
+                }
+                else{
+                    this.tablero[i][j]=aux;
+                }
+                contador++;
+            }
+        }
+    }
+
+    createStructure(){
+        var seccion = document.createElement('main');
+        document.body.appendChild(seccion);
+        for(var i=0;i<this.filas;i++){
+            for(var j=0;j<this.columnas;j++){
+                const parrafo = document.createElement('p');
+                if(this.tablero[i][j]=='0'){
+                    parrafo.setAttribute("data-state","open");
+                    parrafo.addEventListener("click",this.metodoListener );
+                }
+                else{
+                    parrafo.setAttribute("data-state","blocked");
+                    var contenido = document.createTextNode(this.tablero[i][j]);
+                    parrafo.appendChild(contenido);
+                }
+                parrafo.setAttribute("data-posI",i);
+                parrafo.setAttribute("data-posJ",j);
+                seccion.appendChild(parrafo);
+            }
+        }
+    }
+    paintSudoku(){
+        this.createStructure();
+    }
+
+    #buscarSeleccionada(){
+        var casillas = document.querySelectorAll("p");
+        for(var casilla of casillas){
+            if(casilla.getAttribute("data-state")=="clicked")
+                return casilla;
+        }
+        return null;
+        }
+
+    clicar(event){
+        var casillaSeleccionada = event.target;
+        const casilla= this.#buscarSeleccionada();
+        if(casilla!=null){
+            casilla.setAttribute("data-state","open");
+        }
+
+        casillaSeleccionada.setAttribute("data-state","clicked");
+        
+    }
+
+    #convertirNumero(numero){
+        switch(numero){
+            case 49:
+                return 1;
+            case 50:
+                return 2;
+            case 51:
+                return 3;
+            case 52:
+                return 4;
+            case 53:
+                return 5;
+            case 54:
+                return 6;
+            case 55:
+                return 7;
+            case 56:
+                return 8;
+            default:
+                return 9;
+        }
+    }
+
+    #esValido(numero,casilla){
+        if(this.#comprobarFila(numero,casilla)){
+            if(this.#comprobarColumna(numero,casilla)){
+                return this.#comprobarCuadrado(numero,casilla);
+            }
+        }
+        return false;
+    }
+
+    #comprobarFila(numero,casilla){
+        var fila = casilla.getAttribute("data-posI");
+        for(var j=0;j<this.columnas;j++){
+            if(this.tablero[fila][j]==numero){
+                return false;
+            }
+        }
+        return true;
+    }
+    #comprobarColumna(numero,casilla){
+        var columna = casilla.getAttribute("data-posJ");
+        for(var i=0;i<this.filas;i++){
+            if(this.tablero[i][columna]==numero){
+                return false;
+            }
+        }
+        return true;
+
+    }
+    #comprobarCuadrado(numero,casilla){
+        var columna = casilla.getAttribute("data-posJ");
+        var fila = casilla.getAttribute("data-posI");
+        var filaDef = fila-(fila%3)
+        var columnaDef = columna-(columna%3)
+        for(var i=filaDef;i<filaDef+3;i++){
+            for(var j=columnaDef;j<columnaDef+3;j++){
+                if(this.tablero[i][j]==numero){
+                    return false;
+                }
+
+            }
+        }
+        return true;
+    }
+
+    #check_win_condition(){
+        for(var i=0;i<this.filas;i++){
+            for(var j=0;j<this.columnas;j++){
+                if(this.tablero[i][j]==0){
+                    return false;
+                }
+            }
+      }
+      return true;
+    }
+    
+
+    introduceNumber(event){
+        const casilla= this.#buscarSeleccionada();
+        var ek = event.keyCode;
+       if(!(ek==49 || ek==50 || ek==51 || ek==52 || ek==53 || ek==54 || ek==55 || ek==56 || ek==57 )){
+            return;
+       }
+       else if(casilla==null ){
+            alert("Es necesario seleccionar una casilla en la que introducir el número");
+       }
+       else{
+        var numero = this.#convertirNumero(ek)+'';
+        if(this.#esValido(numero,casilla)){
+        this.tablero[casilla.getAttribute("data-posI")][casilla.getAttribute("data-posJ")]=numero;
+        var contenido =document.createTextNode(numero);
+        casilla.appendChild(contenido);
+        casilla.setAttribute("data-state","correct");
+        //usar una variable en el constructor que tenga de valor la línea
+        //en el clicar solo se necesita el propio parrafo que se pulsó
+        casilla.removeEventListener("click",this.metodoListener);
+        }
+        else{
+            alert("El número no es válido");
+        }
+       }
+       if(this.#check_win_condition()){
+        alert("Oleee, has completado el sudoku");
+    }
+    }
+
+    
+
+  
+}
+
+var sudoku = new Sudoku();
+
